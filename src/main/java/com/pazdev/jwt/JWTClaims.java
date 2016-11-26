@@ -17,6 +17,7 @@ package com.pazdev.jwt;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.Base64Variants;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,7 +35,7 @@ import java.util.Map;
  * @author Jonathan Paz <jonathan@pazdev.com>
  */
 @JsonDeserialize(builder = JWTClaims.Builder.class)
-public final class JWTClaims {
+public class JWTClaims {
     @JsonProperty("iss")
     private final String issuer;
     @JsonProperty("sub")
@@ -42,16 +43,19 @@ public final class JWTClaims {
     @JsonProperty("aud")
     private final String audience;
     @JsonProperty("exp")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "s")
     private final Instant expirationTime;
     @JsonProperty("nbf")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "s")
     private final Instant notBefore;
     @JsonProperty("iat")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "s")
     private final Instant issuedAt;
     @JsonProperty("jti")
     private final String jwtId;
     private final Map<String, Object> claims;
 
-    private JWTClaims(String issuer, String subject, String audience, Instant expirationTime, Instant notBefore, Instant issuedAt, String jwtId , Map<String, Object> claims) {
+    protected JWTClaims(String issuer, String subject, String audience, Instant expirationTime, Instant notBefore, Instant issuedAt, String jwtId , Map<String, Object> claims) {
         this.issuer = issuer;
         this.subject = subject;
         this.audience = audience;
@@ -63,15 +67,15 @@ public final class JWTClaims {
     }
 
     @JsonPOJOBuilder
-    public static final class Builder {
-        private String issuer;
-        private String subject;
-        private String audience;
-        private Instant expirationTime;
-        private Instant notBefore;
-        private Instant issuedAt;
-        private String jwtId;
-        private final HashMap<String, Object> claims = new HashMap<>();
+    public static class Builder {
+        protected String issuer;
+        protected String subject;
+        protected String audience;
+        protected Instant expirationTime;
+        protected Instant notBefore;
+        protected Instant issuedAt;
+        protected String jwtId;
+        protected final HashMap<String, Object> claims = new HashMap<>();
 
         @JsonProperty("iss")
         public Builder withIssuer(String issuer) {

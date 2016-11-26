@@ -201,7 +201,7 @@ public final class JWT {
                 if (encryptionKey == null) {
                     throw new IllegalArgumentException("encryption key is required");
                 }
-                String payload = JWE.parse(token).decrypt(encryptionKey, StandardCharsets.UTF_8);
+                String payload = JWE.parse(token).decryptString(encryptionKey);
                 if ("JWT".equals(header.getContentType())) {
                     // encrypted signed-JWT
                     retval = verify(payload, verificationKey);
@@ -266,7 +266,7 @@ public final class JWT {
                 if (key == null) {
                     throw new IllegalArgumentException("encryption key is required");
                 }
-                String payload = JWE.parse(token).decrypt(key, StandardCharsets.UTF_8);
+                String payload = JWE.parse(token).decryptString(key);
                 if ("JWT".equals(header.getContentType())) {
                     // encrypted signed-JWT
                     retval = verify(payload, null);
